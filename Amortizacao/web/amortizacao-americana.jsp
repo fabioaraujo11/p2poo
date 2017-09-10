@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Amortização Americana</title>
+        <link href="content/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <%@include file="WEB-INF/jspf/cabecalho.jspf"%>
