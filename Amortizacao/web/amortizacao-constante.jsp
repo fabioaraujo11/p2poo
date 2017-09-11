@@ -47,19 +47,22 @@
                 <label for='inputTempo' style='font-size: 100%;' >Número de Meses:</label>
                 <input required min='1' step='1' type='number' value="<%=i%>" id='inputTempo' placeholder='Meses' name='t'>
                 <p><input type='submit' value='Calcular SAC'></p>
+                                  </form>
                 <%
-                    
+                    amort = ValFin/i;
+                    taxa = taxa/100;
                     %>
-        <table border="1">
+        <table class="table table-inverse">
             <tr><th>#</th><th>Parcelas</th><th>Amortizações</th><th>Juros</th><th>Saldo Devedor</th></tr>
-              <!--      <%for ( i=1; i <= 10; i++) {%>
+             <td><%=amort+(taxa*ValFin)%></td><td><%=i%></td><td><%=amort%></td><td><%=i%></td><td><%=ValFin-amort%></td>
+                    <%for ( int x=1; x<=i ; x++) {%>
             <tr>
-           
+                           <td><%=i%></td>  
+                <td>= <%=(amort+taxa*(ValFin-x*amort))%></td>
             </tr>   
             <%}%>
+     
         </table>
--->
-                                </form>    
         <%@include file="WEB-INF/jspf/rodape.jspf"%>
     </body>
 </html>
