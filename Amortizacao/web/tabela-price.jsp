@@ -12,7 +12,7 @@
         <title>Tabela Price</title>
         <link href="content/css/bootstrap.min.css" rel="stylesheet">
     </head>
-    <body>
+    <body style="text-align: center">
         <%@include file="WEB-INF/jspf/cabecalho.jspf"%>
         <%@include file="WEB-INF/jspf/menu.jspf"%>
         <%

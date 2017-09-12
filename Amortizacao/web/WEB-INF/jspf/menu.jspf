@@ -1,7 +1,7 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<div>
-    <a href="home.jsp"><button type="button" class="btn btn-default navbar-btn">Início</button></a>
+<div style="background-color: #CC8F4C" class="container-fluid"> 
+    <a href="home.jsp"><button type="button" class="btn btn-default navbar-btn" >Início</button></a>
     <a href="amortizacao-americana.jsp"><button type="button" class="btn btn-default navbar-btn">Amortização Americana</button></a>
     <a href="amortizacao-constante.jsp"><button type="button" class="btn btn-default navbar-btn">Amortização Constante</button></a>
     <a href="tabela-price.jsp"><button type="button" class="btn btn-default navbar-btn">Tabela Price</button></a>
