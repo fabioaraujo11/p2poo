@@ -53,8 +53,8 @@
                 <label for='inputTaxa' style='font-size: 100%;' >Taxa de Juros (%):</label>
                 <input required min='0' step='0.0001' type='number'  value="<%=taxa%>" id='inputTaxa' placeholder='% ao mês' name='taxa'>
                 <label for='inputTempo' style='font-size: 100%;' >Número de Meses:</label>
-                <input required min='1' step='1' type='number' value="<%=i%>" id='inputTempo' placeholder='Meses' name='i'>
-                <p><input type='submit' value='Calcular SAC'></p>
+                <input  required min='1' step='1' type='number' value="<%=i%>" id='inputTempo' placeholder='Meses' name='i'>
+                <p><input type='submit' class="btn btn-default" value='Calcular SAC'></p>
                                   </form>
                 <%
                     amort = ValFin/i;
