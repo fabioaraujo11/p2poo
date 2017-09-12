@@ -3,8 +3,10 @@
     Created on : 10/09/2017, 15:07:50
     Author     : Sammy Guergachi <sguergachi at gmail.com>
 --%>
-
+ 
+<%@page import="java.text.DecimalFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +17,10 @@
     <body style="text-align: center">
         <%@include file="WEB-INF/jspf/cabecalho.jspf"%>
         <%@include file="WEB-INF/jspf/menu.jspf"%>
+        import java.text.DecimalFormat;
         <%
+            
+            
             double ValFin = 0;
             double taxa=0;
             double taxafinal=0;
@@ -28,21 +33,22 @@
             double totalj=0;
             double juros=0;
             int cont=2;
+                        DecimalFormat df = new DecimalFormat("0.000");
             if (request.getParameter("ValFin") != null) {
                 try {
                     ValFin = Integer.parseInt(request.getParameter("ValFin"));
                 } catch (Exception ex) {
-                    out.println("<p>Parametro invalido</p>");
+                    out.println("Parametro invalido");
                 }
                   try {
                     taxa = Double.parseDouble(request.getParameter("taxa"));
                 } catch (Exception ex) {
-                    out.println("<p>Parametro invalido</p>");
+                    out.println("Parametro invalido");
                 }
                     try {
                     i = Integer.parseInt(request.getParameter("i"));
                 } catch (Exception ex) {
-                    out.println("<p>Parametro invalido</p>");
+                    out.println("Parametro invalido");
                 }
             }
             %>
@@ -63,18 +69,20 @@
                      saldo = ValFin-amort;
                     // parc=(amort+(taxa*ValFin));
                    // parc2 =(amort+taxa*(ValFin-x*amort));
+                   
                     
                     %>
         <table class="table table-inverse">
             <tr><th>#</th><th>Parcelas</th><th>Amortizações</th><th>Juros</th><th>Saldo Devedor</th></tr>
-            <td>1</td><td><%=(amort+(taxafinal*ValFin))%></td><td><%=amort=ValFin/i%></td><td><%=ValFin/taxa%></td><td><%=(saldo)%></td>
-                    <%for ( x=1; x<i ;x ++) { totalp=totalp+parc2;%>
+            <td>1</td><td><%=df.format(parc=amort+(taxafinal*ValFin))%></td><td><%=df.format(amort=ValFin/i)%></td><td><%=df.format(totalj=(ValFin/taxa))%></td><td><%=(saldo)%></td>
+            <%totalp+=parc;%>
+                    <%for ( x=1; x<=i ;x ++) { totalp+=parc2; totalj+=juros;%>
             <tr>
-                <td><%=cont++%></td><td><%=parc2=(amort+taxafinal*(ValFin-x*amort))%></td><td><%=amort%></td><td><%=juros=(saldo/taxa)%></td><td><%=(saldo=saldo-amort)%></td>
+                <td><%=cont++%></td><td><%=df.format(parc2=(amort+taxafinal*(ValFin-x*amort)))%></td><td><%=df.format(amort)%></td><td><%=df.format(juros=(saldo/taxa))%></td><td><%=df.format(saldo=saldo-amort)%></td>
 
             </tr>   
             <%}%>
-            <td><%=totalp%></td>
+            <td>TOTAIS</td><td><%=df.format(totalp)%></td><td><%=df.format(ValFin)%></td><td><%=df.format(totalj)%></td>
         </table>
         
         <%@include file="WEB-INF/jspf/rodape.jspf"%>
