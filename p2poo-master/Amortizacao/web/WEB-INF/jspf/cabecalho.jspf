@@ -1,0 +1,11 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<header>
+  
+    <div class="container-fluid" >
+    <div class="row navbar-static-top ">
+        <div class="col-xs-6 col-md-4"><img class="" src="content/img/logoFatec.png" /></div>
+        <div class="col-xs-12 col-md-8"><h1 style="font-size: 55px">Sistema de Amortização</h1></div>
+    </div>
+    </div>
+</header>
