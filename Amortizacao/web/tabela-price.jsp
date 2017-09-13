@@ -16,84 +16,84 @@
     <body style="text-align: center">
         <%@include file="WEB-INF/jspf/cabecalho.jspf"%>
         <%@include file="WEB-INF/jspf/menu.jspf"%>
-            
-        <h1>Tabela Price</h1>
-        <form action="tabela-price.jsp">
-            <div>
-                <label for="valfin"  >Valor Financiamento:</label>
-                <input type="text" id="valfin" name="valfin">
-            </div>
-            <div>
-                <label for="taxa">Taxa de Juros:</label>
-                <input type="text" id="taxa" name="taxa">
-            </div>
-            <div>
-                <label for="months">Quantidade Parcelas:</label>
-                <input type="text" id="months" name="months">
-            </div>
-            <div>
-                <input type="submit" value="Calcular" />
-            </div>
-        </form>
-        
         <%@page import="java.util.*" %>
-        <%@page import="javax.swing.JOptionPane" %>
         <%
+            char   isValidForm = 0;
             double pmt = 0;
             double pv = 0; 
             double i = 0;
+            double sumJuros = 0;
+            double sumParc = 0;
+            double sumAmort = 0;
+            String aux;
+            
+            
             int    n = 0;
             int    idx, idy= 0;
             int    cnt = 0;
             
             double saldoDevedor = 0;
             double juros = 0;
-            
+            asd
             StringTokenizer row = null;
             String cel = null;
+             
+            ArrayList<String> tablerow = null;
             
-            ArrayList<String> tablerow;
-            try {
+            if (request.getParameter("valfin") != null) {
+                try {
                     pv = Double.parseDouble(request.getParameter("valfin"));
-                     if (pv <= 0)
-                        throw new Exception("Numeros menores que 1 nao permitido");
-                     
-            } catch (NullPointerException pnull) {
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Formato campo Valor "
-                        + "Financiamento invalido, use apenas valores numericos com "
-                        + "ou sem virgula "
-                        + "exemplo: 1000,23 ou 250");
-            }
-            
-            try {
-                    i = Double.parseDouble(request.getParameter("taxa"));
-                     if (i <= 0)
-                        throw new Exception("Numeros menores que 1 nao permitido");
-                    
-            } catch (NullPointerException pnull) {
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Formato campo Taxa "
-                        + "de Juros invalido, use apenas valores numéricos com "
-                        + "ou sem virgula"
-                        + "exemplo: 10,01 ou 45");
-            }
-            
-            try {
-                if (request.getParameter("months") != null) {
-                    n = Integer.parseInt(request.getParameter("months"));
-                    if (n <= 0)
-                        throw new Exception("Numeros menores que 1 nao permitido");
+                    if (pv <= 0) {
+                       throw new Exception("Numero zero ou negativo não é permitido");
+                    }
+                } catch (Exception ex) {
+                %> <script> alert("Formato campo Valor "
+                            + "Financiamento invalido, use apenas valores numericos positivos com "
+                            + "ou sem virgula "
+                            + "exemplo: 1000,23 ou 250");
+                   </script>
+                <%
+                    pv = 0;
                 }
-                    
-            } catch (NullPointerException pnull) {
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Formato campo Quantidade "
-                        + "Parcelas invalido, use apenas valores inteiros positivos"
-                        + "exemplo: 12 ");
+            }
+            
+            if (request.getParameter("taxa") != null) {
+                try {
+                        i = Double.parseDouble(request.getParameter("taxa"));
+                        if (i <= 0) {
+                            throw new Exception("Numero zero ou negativo não é permitido");
+                        }
+                } catch (Exception ex) {
+                %> <script> alert("Formato campo Taxa "
+                            + "de Juros invalido, use apenas valores numéricos positivos com "
+                            + "ou sem virgula "
+                            + "exemplo: 10,01 ou 45");
+                   </script>
+                <%
+                    i = 0;
+                }
+            }
+
+            if (request.getParameter("months") != null) {
+                try {
+                    if (request.getParameter("months") != null) {
+                        n = Integer.parseInt(request.getParameter("months"));
+                        if (n <= 0) {
+                            throw new Exception("Numero zero ou negativo não é permitido");
+                        }
+                    }
+                } catch (Exception ex) {
+                %> <script> alert("Formato campo Quantidade "
+                            + "Parcelas invalido, use apenas valores numéricos inteiros positivos "
+                            + "exemplo: 12 ");
+                   </script>
+                <%
+                    n = 0;
+                }
             }
 
             if (pv > 0 && i > 0 && n > 0) {
+                isValidForm = 1;
                 pmt = (pv * (i / 100)) / (1 - (1 / Math.pow((1 + (i / 100)), n)));
             
                 tablerow = new ArrayList();
@@ -102,36 +102,75 @@
                 saldoDevedor = pv;
                 for (idx = 0; idx < n; idx ++) {
                     juros = saldoDevedor * (i / 100);
-                    saldoDevedor -= pmt-juros; 
-                    tablerow.add(String.format("%d;R$%.2f;R$%.2f;R$%.2f;"
-                            + "R$%.2f", idx + 1, saldoDevedor, pmt, juros, pmt-juros));
+                    sumJuros += juros;
+                    sumParc += pmt;
+                    saldoDevedor -= pmt-juros;
+                    sumAmort += pmt-juros;
+                    tablerow.add(String.format("%d;R$ %.2f;R$ %.2f;R$ %.2f;"
+                            + "R$ %.2f", idx + 1, saldoDevedor, pmt, juros, pmt-juros));
                 }
-                                
-                out.println("<table border='1'>");
-                out.println( "<tr>"); 
-                out.println(  "<th>Período</th>");
-                out.println(  "<th>Saldo Devedor</th>");
-                out.println(  "<th>Parcela</th>");
-                out.println(  "<th>Juros</th>");
-                out.println(  "<th>Amortização</th>");
-                out.println(  "</tr>");
-                
-                
-                for (idx = 0; idx < (n+1); idx++){
-                    out.println( "<tr>");
-                    row = new StringTokenizer(tablerow.get(idx), ";");
-                    
-                    cnt = row.countTokens();
-                    for (idy = 0; idy < cnt; idy++) {
-                        cel = row.nextToken();
-                        out.println("<th>"+ cel +"</th>");
-                    }
-                    
-                    out.println( "</tr>");
-                }
-                out.println("</table>");
             }
-            %>
+        %>
+            
+        <h1>Tabela Price</h1>
+        <div>
+            <form action="tabela-price.jsp">
+                <label for="valfin" style="font-size: 100%">Valor Financiamento:</label>
+                <input type="number" id="valfin" name="valfin" required="required"
+                       min="0.01" step="0.01" placeholder="R$">
+                
+                <label for="taxa" style="font-size: 100%">Taxa de Juros:</label>
+                <input type="number" id="taxa" name="taxa" required="required"
+                       min="0.0001" step="0.0001" placeholder="%">
+                
+                <label for="months" style="font-size: 100%">Quantidade Parcelas:</label>
+                <input type="number" id="months" name="months" required="required" 
+                       min="1" step="1" placeholder="Numero Meses">
+                
+                <input class="btn btn-default" type="submit" name="sendform" 
+                       value="Calcular Price" />
+            </form>    
+        </div>
+        
+        <div>
+            <table class="table tatable-inverse">
+                <tr>
+                    <th>Período</th>
+                    <th>Saldo Devedor</th>
+                    <th>Parcela</th>
+                    <th>Juros</th>
+                    <th>Amortização</th>
+                </tr>
+        <%          if(request.getParameter("sendform")!=null &&
+                       isValidForm != 0){%>
+        <%              for (idx = 0; idx < (n+1); idx++) { %>
+                        <tr>
+        <%                  row = new StringTokenizer(tablerow.get(idx), ";");
+
+                            cnt = row.countTokens();
+                            for (idy = 0; idy < cnt; idy++) {
+                                cel = row.nextToken();
+        %>
+                                <th><%=cel%></th>
+        <%                  } %>
+                        </tr>
+        <%              } %>
+                    <tr>
+                        <th>Totais</th>
+                        <th></th>
+                        <th>
+                            <% out.println(String.format("R$ %.2f", sumParc));%>
+                        </th>
+                        <th>
+                            <% out.println(String.format("R$ %.2f", sumJuros));%>
+                        </th>
+                        <th>
+                            <% out.println(String.format("R$ %.2f", sumAmort));%>
+                        </th>
+                    </tr>
+        <%          }%>
+                </table>
+            </div>
         <%@include file="WEB-INF/jspf/rodape.jspf"%>
     
 
