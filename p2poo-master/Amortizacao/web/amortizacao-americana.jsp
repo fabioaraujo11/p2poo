@@ -46,21 +46,21 @@
             }
             if (request.getParameter("meses") != null) {
                     try {
-                    meses = Integer.parseInt(request.getParameter(""));
+                    meses = Integer.parseInt(request.getParameter("meses"));
                 } catch (Exception ex) {
                     out.println("Parametro invalido");
                 }
             }
             
             %>
-        <h1>Amortização Constante</h1>
+        <h1>Amortização Americana</h1>
                                   <form>
                 <label for='inputValor' style='font-size: 100%;'>Valor Financiado:</label>
-                <input required min='0' step='0.0001' type='number'  value="<%=montante%>" id='inputValor' placeholder='R$' name='ValFin'>
+                <input required min='0' step='0.0001' type='number'  value="<%=montante%>" id='inputValor' placeholder='R$' name='montante'>
                 <label for='inputTaxa' style='font-size: 100%;' >Taxa de Juros (%):</label>
                 <input required min='0' step='0.0001' type='number'  value="<%=juros%>" id='inputTaxa' placeholder='% ao mês' name='taxa'>
                 <label for='inputTempo' style='font-size: 100%;' >Número de Meses:</label>
-                <input  required min='1' step='1' type='number' value="<%=meses%>" id='inputTempo' placeholder='Meses' name='i'>
+                <input  required min='1' step='1' type='number' value="<%=meses%>" id='inputTempo' placeholder='Meses' name='meses'>
                 <p><input type='submit' class="btn btn-default" name='sendform' value='Calcular SAA'></p>
                                   </form>
                 <%
@@ -76,7 +76,7 @@
             <td>1</td><td><%=df.format(parcelajuros)%></td><td>-</td><td><%=df.format(parcelajuros)%></td><td><%=df.format(montante)%></td>
         <%}%>
   
-                    <%for ( x=1; x<meses ;x ++)%>
+                    <%for ( x=1; x<meses ;x ++){%>
                     
             <tr>
                 <td><%=x%></td><td><%=df.format(parcelajuros)%></td><td>-</td><td><%=df.format(parcelajuros)%></td><td><%=df.format(montante)%></td>
