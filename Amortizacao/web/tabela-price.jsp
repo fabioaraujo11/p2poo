@@ -34,7 +34,6 @@
             
             double saldoDevedor = 0;
             double juros = 0;
-            asd
             StringTokenizer row = null;
             String cel = null;
              
