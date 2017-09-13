@@ -12,7 +12,7 @@
         <title>Início</title>
         <link href="content/css/bootstrap.css" rel="stylesheet">
     </head>
-    <body style="text-align: center" >
+    <body style="text-align: center; margin: 20px 40px 300px 30px">
         <%@include file="WEB-INF/jspf/cabecalho.jspf"%>
         <%@include file="WEB-INF/jspf/menu.jspf"%>
         
